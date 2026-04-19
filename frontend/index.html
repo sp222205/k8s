@@ -1,0 +1,38 @@
+<h1>Frontend - DB Demo</h1>
+
+<input id="name" placeholder="Enter name" />
+<button onclick="addItem()">Add</button>
+
+<button onclick="getItems()">Get Items</button>
+
+<ul id="list"></ul>
+
+<script>
+async function addItem() {
+  const name = document.getElementById("name").value;
+
+  await fetch("/api/items", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name })
+  });
+
+  alert("Item added");
+}
+
+async function getItems() {
+  const res = await fetch("/api/items");
+  const data = await res.json();
+
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  data.forEach(item => {
+    const li = document.createElement("li");
+    li.innerText = item.name;
+    list.appendChild(li);
+  });
+}
+</script>
